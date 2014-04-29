@@ -7,13 +7,14 @@
 # as well as decaying turbulence.
 # 
 
+# DESIGN SPECIFIC PARAMETERS AT END OF FILE!!!
+
 #
 #  define problem
 #
 UseCUDA                    = 0
 ProblemType                = 306
 TopGridRank                = 3	         # Dimenionality of basegrid, i.e. 3D
-TopGridDimensions          = 128 128 128 # Grid size
 SelfGravity                = 0   
 TopGridGravityBoundary     = 0           # 0 for periodic Gravity boundary cond.
 LeftFaceBoundaryCondition  = 3 3 3       # 3 is periodic boundary condition
@@ -83,7 +84,6 @@ RiemannSolverFallback       = 0      # Only active when 4-HLLC or 5-TwoShock
 Theta_Limiter               = 1.5    # 1.5 is default, don't change
 RKOrder                     = 2      # 2is default, don't change
 EOSType                     = 3      # 0=ideal, 1=polytropic, 2=mix, 3=isothermal
-EOSSoundSpeed               = 1.88e4 #This corresponds to T=10K,mu=2.33.
 
 # Floors not read in on initialization; change manually in data file
 SmallRho                    = 1e-27  # Density floor, problem specific 
@@ -96,17 +96,12 @@ SmallT                      = 5      # Temp floor, problem specific
 UsePhysicalUnit = 1
 LengthUnits     = 3.086e19    # 10 parsec box
 DensityUnits    = 1.67e-22    # 100/cm^3 particles
-TimeUnits       = 1.6415e14   # 1 = crossing time at mach 10
 UseDrivingField = 0           # Temporaly and spatially fixed force pattern on/off
 DrivingEfficiency = 1.6e3     # Vary to get an approximately constant Mach Number depending on conditions    
 SetTurbulence   = 1	     
 Density         = 1.67e-22    # Initial mean density
 CloudType       = 0           # 0 - uniform
 CloudRadius     = 2.0         # Only used for CloudType >0
-SoundVelocity   = 1.88e4      # Should be same as above
-MachNumber      = 10          # Start at 15 so settles at 10
-RandomSeed      = 842091      # For turbulent initialization
-InitialBfield   = 1e-6        # Initial constant z field, Gauss
 Debug1          = 1
 
 #
@@ -132,3 +127,15 @@ NumberOfParticleAttributes     = 3        # Set by Bo
 #  set some global parameters
 #
 GreensFunctionMaxNumber   = 10   // # of greens function at any one time
+
+# DESIGN SPECIFIC PARAMETERS!
+#TopGridDimensions          = 128 128 128 # Grid size
+#InitialBfield   = 1e-6        # Initial constant z field, Gauss
+#MachNumber      = 10          # Start at 15 so settles at 10
+#RandomSeed      = 842091      # For turbulent initialization
+
+# Derived Parameters
+#EOSSoundSpeed               = 1.88e4 #This corresponds to T=10K,mu=2.33.
+#SoundVelocity   = 1.88e4      # Should be same as above
+#TimeUnits       = 1.6415e14   # 1 = crossing time at mach 10
+
