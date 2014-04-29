@@ -1,0 +1,134 @@
+#
+# Stella Offner 2013
+# Revised for enzo 2.3, to include MHDCT 
+# Problem based on driven turbulence box ProblemType 106 
+# 
+# This can do fixed force pattern driving (UseDrivingField = 1) 
+# as well as decaying turbulence.
+# 
+
+#
+#  define problem
+#
+UseCUDA                    = 0
+ProblemType                = 306
+TopGridRank                = 3	         # Dimenionality of basegrid, i.e. 3D
+TopGridDimensions          = 128 128 128 # Grid size
+SelfGravity                = 0   
+TopGridGravityBoundary     = 0           # 0 for periodic Gravity boundary cond.
+LeftFaceBoundaryCondition  = 3 3 3       # 3 is periodic boundary condition
+RightFaceBoundaryCondition = 3 3 3 
+
+#
+#New defined quantities
+#
+UseMHDCT               = 1    # This should be set in the code, define in case
+CT_AthenaDissipation   = 0.1  # Set when MHD_CT_Method=2
+MHDCTSlopeLimiter      = 1    # 0:zero,1:minmod,2:VanLeer,3:char,4:prim limit
+MHDCTUseSpecificEnergy = 1    # 0: sepcific energy, 1: conserved energy
+MHDDualEnergyMethod    = 0
+MHD_WriteElectric      = 0
+MHD_CT_Method          = 2    # 0: Off, 1: Balsara, 2: O2 LF, 3: O2 Upwind 
+#DC recommends CT_Method 2 rather than 1
+
+#May be problem specific, see Problem: Grid_CollapseMHD3DInitializeGrid.C (202
+#EquationOfState        = 0    # Standard adiabatic
+
+# WriteBoundary           = 0
+ReconstructionMethod    = 6   # 0:PLM, 6: MUSCL-Hancock
+MHD_InterpolationMethod = 1   # 0 = Direct sample, 1=Average
+
+#
+#  set I/O and stop/start parameters
+#
+StopTime            = 2     # Stop time in code units
+#CycleSkipDataDump  = 10
+dtDataDump          = 0.1   # Time interval in code units for outputs
+DataDumpName        = DD
+ParallelRootGridIO  = 1     # Whether root grid is read in on 1 proc--may
+                            # need to set to 1--each proc reads own section
+			    # SSRO note =0 doesn't seem to work
+PotentialIterations = 6     # number of iterations to solve pot on sub-grids
+			    # Default is 4 -> may lead to overdensities 
+			    # on boundaries if not high enough
+WritePotential      = 1
+OutputTemperature   = 1     # Write temperature field in datasets
+
+#
+#  set grid refinement parameters
+#
+StaticHierarchy           = 1   # If set to 1, grid will be static (not adaptive)
+FluxCorrection            = 1   # re-fluxing at boundaries to preserve conservations
+MaximumRefinementLevel    = 4	# Total number of levels i one more than this value--0 = no refinement
+RefineBy                  = 2   # factor of resolution between levels
+CellFlaggingMethod        = 6   # 6=Refine by Jeans length, see table for others
+MinimumEfficiency         = 0.3 # of new grids--ratio of flagged zones to 
+				# total number on grid
+InterpolationMethod       = 1   # 2nd order accurate--conservative, speedy
+ConservativeInterpolation = 1   # 1= interpolation in the conserved quantities
+				# can cause problems in strong density gradients
+NumberOfBufferZones       = 1   # around refined grid when regridding, default=1
+RefineAtStart             = 0   # Seems to be set by problem type specifically
+
+#
+#  set hydro parameters
+#
+Gamma                       = 1.001  # ratio of specific heats for ideal gas
+Mu                          = 2.33   # default=0.6
+CourantSafetyNumber         = 0.3    # Recommended to be <=0.4
+HydroMethod                 = 6      # 3 - no MHD, 4 - MHD, 6 =CT MHD
+DualEnergyFormalism         = 0      # For =1 two energy fields:total and thermal
+RiemannSolver               = 6	     # HLL=1,default for HydroMethod=3; 6= HLLD
+RiemannSolverFallback       = 0      # Only active when 4-HLLC or 5-TwoShock
+Theta_Limiter               = 1.5    # 1.5 is default, don't change
+RKOrder                     = 2      # 2is default, don't change
+EOSType                     = 3      # 0=ideal, 1=polytropic, 2=mix, 3=isothermal
+EOSSoundSpeed               = 1.88e4 #This corresponds to T=10K,mu=2.33.
+
+# Floors not read in on initialization; change manually in data file
+SmallRho                    = 1e-27  # Density floor, problem specific 
+SmallP                      = 1e-20  # Pressure floor, problem specific
+SmallT                      = 5      # Temp floor, problem specific
+
+#
+# problem parameters
+#
+UsePhysicalUnit = 1
+LengthUnits     = 3.086e19    # 10 parsec box
+DensityUnits    = 1.67e-22    # 100/cm^3 particles
+TimeUnits       = 1.6415e14   # 1 = crossing time at mach 10
+UseDrivingField = 0           # Temporaly and spatially fixed force pattern on/off
+DrivingEfficiency = 1.6e3     # Vary to get an approximately constant Mach Number depending on conditions    
+SetTurbulence   = 1	     
+Density         = 1.67e-22    # Initial mean density
+CloudType       = 0           # 0 - uniform
+CloudRadius     = 2.0         # Only used for CloudType >0
+SoundVelocity   = 1.88e4      # Should be same as above
+MachNumber      = 10          # Start at 15 so settles at 10
+RandomSeed      = 842091      # For turbulent initialization
+InitialBfield   = 1e-6        # Initial constant z field, Gauss
+Debug1          = 1
+
+#
+# New Turbulence Parameters for CTMHD, Based on Krisuk method
+#
+RandomForcing            = 1          
+RandomForcingEdot        = -1.0     #if < 0 this is calc in the initalization.
+RandomForcingMachNumber  = 10.0     # Not currently used, set to a + value
+ReadForcingData          = 1        # Read data from RandomField1,2,3  
+StoreForcing		 = 1
+#
+# Sink Particle Parameters
+#
+
+StarParticleCreation           = 16       # 16 = For individual SF
+SinkMergeDistance              = 2.414e17 # Closest approach before merge
+SinkMergeMass                  = 0.100000
+StellarWindFeedback            = 0       
+StarMakerOverDensityThreshold  = 175
+NumberOfParticleAttributes     = 3        # Set by Bo
+
+#
+#  set some global parameters
+#
+GreensFunctionMaxNumber   = 10   // # of greens function at any one time
