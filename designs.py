@@ -9,52 +9,64 @@ from astropy.table import Table
 
 values = np.loadtxt('gpRuns24N4D.txt')
 
-rootdir = './SimSuite/'
+rootdir = os.path.expanduser("~")+'/SimSuite/'
 rootname = 'Design'
 
 GenerateFields = False
 
+# Domain Definition
+# Fixed parameters for this simulation.
+
 BoxSize = 10*u.pc
-
-# Design parameters
-Tmin = 8
-Tmax = 30
-
-bmin = 0
-bmax = 1
-
-logBmin = -7.0
-logBmax = -5.0
-
-MachMin = 5
-MachMax = 20
-np.random.seed(8675309)
-seeds = np.random.randint(long(2)**24,size=values.shape[0])
-
-# Fixed parameters for this simulation. 
+Tvals = 10.0*u.K*np.ones(values.shape[0])
 kMin = 2*np.ones(values.shape[0]).astype('int')
 kMax = 4*np.ones(values.shape[0]).astype('int')
 RootGridSize = 128
 
-Tvals = (Tmin + (Tmax-Tmin)*values[:,0])*u.K
-bvals = bmin + (bmax-bmin)*values[:,1]
-logBvals = logBmin + (logBmax-logBmin)*values[:,2]
-MachVals = MachMin + (MachMax-MachMin)*values[:,3]
-Bvals = (1e1**logBvals)*u.G
+# Design parameters
+logVPmin = -1.0
+logVPmax = +1.0
 
+bmin = 0
+bmax = 1
+
+logbetamin = -1.0
+logbetamax = 1.0
+
+MachMin = 5
+MachMax = 20
+
+np.random.seed(8675309)
+seeds = np.random.randint(long(2)**24,size=values.shape[0])
+
+logVPvals = logVPmin+(logVPmax-logVPmin)*values[:,0]
+logbetavals = logbetamin + (logbetamax-logbetamin)*values[:,2]
+
+#fundamental design params
+bvals = bmin + (bmax-bmin)*values[:,1]
+MachVals = MachMin + (MachMax-MachMin)*values[:,3]
+betavals = (1e1**logbetavals)
+VPvals = (1e1**logVPvals)
+
+#Derived parameters
+SoundSpeed = ((const.k_B*Tvals/(2.33*const.m_n))**(0.5)).to(u.cm/u.s)
+density = ((5*MachVals**2*SoundSpeed**2)/
+           (6*const.G*VPvals*BoxSize**2)).to(u.g/u.cm**3)
+tcross = (BoxSize/(MachVals*SoundSpeed)).to(u.s)
+Bvals = ((8*np.pi*density*SoundSpeed**2/betavals)**(0.5)).value*(u.G)
 
 params = Table([Tvals,bvals,Bvals,MachVals,kMin,kMax,seeds],\
                     names=('Kinetic Temperature','Solenoidal Fraction','Magnetic Field','Mach Number','kMin','kMax','Seed'))
 
-soundspeed = (const.k_B*Tvals/(2.33*const.m_n))**(0.5)
-tcross = (BoxSize/(MachVals*soundspeed)).to(u.s)
 
+params['Virial Parameter'] = VPvals
+params['Plasma Beta'] = betavals
 params['Index'] = np.arange(values.shape[0]).astype('int')
-params['Sound Speed']=soundspeed.to(u.cm/u.s)
+params['Sound Speed']=SoundSpeed.to(u.cm/u.s)
 params['Crossing Time']=tcross.to(u.s)
 params['PL Index']=2*np.ones(values.shape[0])
 params['Box Size']=RootGridSize*np.ones(values.shape[0]).astype('int')
-
+params['Density']=density
 
 for idx,bval in enumerate(bvals):
 
@@ -100,6 +112,8 @@ for idx,bval in enumerate(bvals):
                            format(params[idx]['Sound Speed']))
         template.write('TimeUnits = {0:6e}\n'.\
                            format(params[idx]['Crossing Time']))
+        template.write('Density = {0:6e}\n'.\
+                           format(params[idx]['Density']))
         template.close()
     print(dirname)
 params.write('parameter_table.ascii',format='ascii.fixed_width')

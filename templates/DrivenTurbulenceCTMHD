@@ -99,7 +99,6 @@ DensityUnits    = 1.67e-22    # 100/cm^3 particles
 UseDrivingField = 0           # Temporaly and spatially fixed force pattern on/off
 DrivingEfficiency = 1.6e3     # Vary to get an approximately constant Mach Number depending on conditions    
 SetTurbulence   = 1	     
-Density         = 1.67e-22    # Initial mean density
 CloudType       = 0           # 0 - uniform
 CloudRadius     = 2.0         # Only used for CloudType >0
 Debug1          = 1
@@ -138,4 +137,5 @@ GreensFunctionMaxNumber   = 10   // # of greens function at any one time
 #EOSSoundSpeed               = 1.88e4 #This corresponds to T=10K,mu=2.33.
 #SoundVelocity   = 1.88e4      # Should be same as above
 #TimeUnits       = 1.6415e14   # 1 = crossing time at mach 10
+#Density         = 1.67e-22    # Initial mean density
 
