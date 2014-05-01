@@ -9,10 +9,10 @@ from astropy.table import Table
 
 values = np.loadtxt('gpRuns24N4D.txt')
 
-rootdir = os.path.expanduser("~")+'/SimSuite/'
+rootdir = os.path.expanduser("~")+'/SimSuite2/'
 rootname = 'Design'
 
-GenerateFields = True
+GenerateFields = False
 
 # Domain Definition
 # Fixed parameters for this simulation.
@@ -24,7 +24,7 @@ kMax = 4*np.ones(values.shape[0]).astype('int')
 RootGridSize = 128
 
 # Design parameters
-logVPmin = -1.0
+logVPmin = -0.3 
 logVPmax = +1.0
 
 bmin = 0
@@ -117,3 +117,4 @@ for idx,bval in enumerate(bvals):
         template.close()
     print(dirname)
 params.write('parameter_table.ascii',format='ascii.fixed_width')
+params.write('parameter_table.csv',format='ascii',delimiter=',')
