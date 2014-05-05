@@ -9,7 +9,7 @@ from astropy.table import Table
 
 values = np.loadtxt('gpRuns24N4D.txt')
 
-rootdir = os.path.expanduser("~")+'/SimSuite2/'
+rootdir = os.path.expanduser("~")+'/SimSuite3/'
 rootname = 'Design'
 
 GenerateFields = False
@@ -24,8 +24,8 @@ kMax = 4*np.ones(values.shape[0]).astype('int')
 RootGridSize = 128
 
 # Design parameters
-logVPmin = -0.3 
-logVPmax = +1.0
+logVPmin = np.log10(1.5)
+logVPmax = logVPmin+1
 
 bmin = 0
 bmax = 1
