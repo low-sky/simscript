@@ -12,7 +12,7 @@ values = np.loadtxt('gpRuns24N4D.txt')
 rootdir = os.path.expanduser("~")+'/SimSuite3/'
 rootname = 'Design'
 
-GenerateFields = False
+GenerateFields = True
 
 # Domain Definition
 # Fixed parameters for this simulation.
