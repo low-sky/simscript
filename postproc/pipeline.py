@@ -18,6 +18,8 @@ print(command)
 result = commands.getoutput(command)
 print(result)
 
-pp.MakeFits(fitsfile=D['FileName']+'_radmc.fits',dpc = 260.0,toK=True)
-shutil.move(D['FileName']+'_radmc.fits','/home/eros/runs/fitsfiles/.')
+save_name = D['FileName'][:-5]+'_radmc.fits'
+
+pp.MakeFits(fitsfile=save_name,dpc = 260.0,toK=True)
+shutil.move(save_name,'/home/eros/runs/fitsfiles/.')
 
