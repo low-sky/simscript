@@ -4,7 +4,6 @@ import shutil
 
 simnames = os.listdir('/global/scratch/eros/runs/SimSuite3/')
 steplist = list((21,22,23,24,25,26,27,28,29,30))
-steplist = list((21))
 facelist = list((0,1,2))
 for nom in simnames:
     target_dir = '/global/scratch/eros/runs/'
@@ -13,7 +12,7 @@ for nom in simnames:
     with open(target_dir+target_name,'a') as template:
         for face in facelist:
             for step in steplist:
-                template.write('$PPDIR/post_processing.sh $EHOME/runs/SimSuite3/'+nom+' {0} 128 {1}\n'.format(step,face))
+                template.write('python $PPDIR/pipeline.py $EHOME/runs/SimSuite3/'+nom+' {0} {1} 0\n'.format(step,face))
     template.close()
 
 
