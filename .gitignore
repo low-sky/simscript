@@ -57,3 +57,7 @@ docs/_build/
 # Enzo files
 RandomField*
 SimSuite*
+
+# Sublime Project folders
+*.sublime-project
+*.sublime-workspace
