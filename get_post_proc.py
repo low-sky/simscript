@@ -12,7 +12,7 @@ for nom in simnames:
     with open(target_dir+target_name,'a') as template:
         for face in facelist:
             for step in steplist:
-                template.write('python $PPDIR/pipeline.py $EHOME/runs/SimSuite3/'+nom+' {0} {1} 0\n'.format(step,face))
+                template.write('python $PPDIR/pipeline.py SimSuite3/'+nom+' {0} {1} 0\n'.format(step,face))
     template.close()
 
 

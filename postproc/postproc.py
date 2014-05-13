@@ -13,26 +13,20 @@ import numpy as np
 import array 
 import readRADMC as RADMC
 
-def FileSetup(targetdir,timestep=21,face=0,level=0):
+def FileSetup(targetdir,timestep=21,face=0,level=0,ppdir='/home/eros/simscript/postproc/'):
 
     homedir = os.getenv('HOME')
     workdir = os.getenv('PWD')
 
-    ppdir = homedir+'/postproc/'
     execfile(ppdir+'problem_setup.py')
     execfile(ppdir+'makefits.py')
     execfile(ppdir+'readRADMC.py')
-
 
     name = targetdir.replace('/','')
 
     tempdir = workdir+'/tmp_'+name
     print(commands.getoutput('rm -rf '+tempdir))
     os.mkdir(tempdir)
-
-
-#tempdir = tempfile.mkdtemp()
-
 
     print('Building files with prefix %s' %(name))
     num = timestep

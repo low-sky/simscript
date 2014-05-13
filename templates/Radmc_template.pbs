@@ -14,7 +14,7 @@ module unload intel-2011/hdf5
 module load intel/14.0.2
 
 export EHOME=/global/home/eros/
-export PPDIR=$EHOME/runs/postproc/
+export PPDIR=$EHOME/simscript/postproc/
 export PYTHONPATH=$PYTHONPATH+':'+$PPDIR
 source $EHOME/yt-x86_64/bin/activate
 cd $PBS_O_WORKDIR

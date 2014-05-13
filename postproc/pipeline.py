@@ -8,8 +8,8 @@ timestep = float(sys.argv[2])
 face = float(sys.argv[3])
 level = float(sys.argv[4])
 
-ppdir = '/global/home/eros/postproc/'
-D = pp.FileSetup(targetdir,face=face,level=level,timestep=timestep)
+ppdir = '/home/eros/simscript/postproc/'
+D = pp.FileSetup(targetdir,face=face,level=level,timestep=timestep,ppdir=ppdir)
 os.chdir(D['TempDir'])
 pp.ProblemSetup(D['FileName'], face = face, dust_temp = D['GasTemp'])
 
