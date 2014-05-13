@@ -2,7 +2,7 @@ import commands
 import sys
 import postproc as pp
 import os
-
+import shutil
 targetdir = sys.argv[1]
 timestep = float(sys.argv[2])
 face = float(sys.argv[3])
@@ -19,4 +19,5 @@ result = commands.getoutput(command)
 print(result)
 
 pp.MakeFits(fitsfile=D['FileName']+'_radmc.fits',dpc = 260.0,toK=True)
+shutil.move(D['FileName']+'_radmc.fits','/home/eros/runs/fitsfiles/.')
 

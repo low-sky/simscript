@@ -61,7 +61,7 @@ def FileSetup(targetdir,timestep=21,face=0,level=0,ppdir='/home/eros/simscript/p
                               # And any fields to preload (this is optional!)
                               fields=["Density"])
     
-    FlatFileName = tempdir+'/%s_flatrho_%04i.fits' %(name, num)
+    FlatFileName = tempdir+'/%s_flatrho_%04i_%02i.fits' %(name, num,face)
     
     pyfits.writeto(FlatFileName, cube["Density"],clobber=True)
     pyfits.append(FlatFileName, cube["x-velocity"])
