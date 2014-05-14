@@ -16,7 +16,10 @@ import readRADMC as RADMC
 def FileSetup(targetdir,timestep=21,face=0,level=0,ppdir='/home/eros/simscript/postproc/'):
 
     homedir = os.getenv('HOME')
-    workdir = os.getenv('PWD')
+    if not os.access(targetdir,os.R_OK):
+        workdir = os.getenv('PWD')
+    else:
+        workdir=''
 
     execfile(ppdir+'problem_setup.py')
     execfile(ppdir+'makefits.py')
@@ -24,7 +27,7 @@ def FileSetup(targetdir,timestep=21,face=0,level=0,ppdir='/home/eros/simscript/p
 
     name = targetdir.replace('/','')
 
-    tempdir = workdir+'/tmp_'+name
+    tempdir = os.getenv('PWD')+'/tmp_'+name
     print(commands.getoutput('rm -rf '+tempdir))
     os.mkdir(tempdir)
 

@@ -8,7 +8,8 @@ timestep = float(sys.argv[2])
 face = float(sys.argv[3])
 level = float(sys.argv[4])
 
-ppdir = '/home/eros/simscript/postproc/'
+ppdir = os.getenv('PPDIR')
+outdir = os.getenv('PPOUTDIR')
 D = pp.FileSetup(targetdir,face=face,level=level,timestep=timestep,ppdir=ppdir)
 os.chdir(D['TempDir'])
 pp.ProblemSetup(D['FileName'], face = face, dust_temp = D['GasTemp'])
@@ -21,5 +22,5 @@ print(result)
 save_name = D['FileName'][:-5]+'_radmc.fits'
 
 pp.MakeFits(fitsfile=save_name,dpc = 260.0,toK=True)
-shutil.move(save_name,'/home/eros/runs/fitsfiles/.')
+shutil.move(save_name,outdir)
 

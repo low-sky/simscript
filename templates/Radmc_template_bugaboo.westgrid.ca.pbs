@@ -12,6 +12,7 @@ module load intel/14.0.2
 
 export EHOME=/home/eros/
 export PPDIR=$EHOME/simscript/postproc/
+export PPOUTDIR=/global/scratch/eros/runs/fitsfiles/
 export PYTHONPATH=$PYTHONPATH+':'+$PPDIR
 source $EHOME/yt-x86_64/bin/activate
 cd $PBS_O_WORKDIR
