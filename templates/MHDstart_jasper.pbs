@@ -1,0 +1,24 @@
+#!/bin/csh
+
+#PBS -S /bin/tcsh
+#PBS -l pmem=2000mb
+#PBS -l procs=8
+#PBS -l walltime=24:00:00
+#PBS -m bea
+#PBS -M erosolow@ualberta.ca
+#PBS -l epilogue=/home/eros/bin/epilogue.sh
+
+module load library/hdf5/1.8.8
+module load application/python/2.7.3
+module load compiler/intel/13.0.1
+module load library/openmpi/1.6.5-intel
+set path = (/home/eros/bin $path)
+setenv PYTHONPATH `echo $PYTHONPATH`:/home/eros/lib/python:/home/eros/code/
+
+cd $PBS_O_WORKDIR
+echo "Current working directory is `pwd`"
+
+echo "Starting run at: `date`"
+mpirun -n 8 /home/eros/enzo-ssro.exe DrivenTurbulenceCTMHD
+
+echo "Program diffuse finished with exit code $? at: `date`"
