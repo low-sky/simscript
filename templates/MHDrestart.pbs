@@ -8,11 +8,11 @@
 #PBS -M erosolow@ualberta.ca
 #PBS -l epilogue=/home/eros/bin/epilogue.sh
 
-module load library/hdf5/1.8.8
-module load application/python/2.7.3
-module load compiler/intel/13.0.1
-module load library/openmpi/1.6.5-intel
-set path = (/home/eros/bin $path)
+
+module load intel-2011/12.1.0-sp1.8.273
+module load python/2.7.3
+module load intel-2011/hdf5
+set path = ($path /home/eros/bin)
 setenv PYTHONPATH `echo $PYTHONPATH`:/home/eros/lib/python:/home/eros/code/
 
 cd $PBS_O_WORKDIR
