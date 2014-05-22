@@ -3,10 +3,10 @@ import os
 import shutil
 import sys
 
-if sys.argv[1] is None:
+if len(sys.argv) == 1:
     try:
 #        simdir = os.listdir('/global/scratch/eros/runs/SimSuite3/')
-        simdir = os.listdir('/lustre/home/eros/SimSuite4')
+        simdir = '/lustre/home/eros/runs/SimSuite4/'
     except OSError:
         simdir = os.listdir('.')
 else:
@@ -17,10 +17,10 @@ steplist = list((21,22,23,24,25,26,27,28,29,30))
 facelist = list((0,1,2))
 un = os.uname()
 for nom in simnames:
-    if sys.argv[2] is None:
+    if len(sys.argv) < 3 :
         if os.access('/global/scratch/eros/runs/',os.W_OK):
             target_dir = '/global/scratch/eros/runs/'
-        elif: os.access('/lustre/home/eros/runs/',os.W_OK):
+        elif os.access('/lustre/home/eros/runs/',os.W_OK):
             target_dir = '/lustre/home/eros/runs/'
         else:
             target_dir ='./'
