@@ -105,6 +105,8 @@ for idx,bval in enumerate(bvals):
                        # This 4pi is for CTMHD units
         template.write('MachNumber = {0:4f}\n'.\
                            format(params[idx]['Mach Number']))
+        template.write('RandomForcingMachNumber = {0:4f}\n'.\
+                           format(params[idx]['Mach Number']))
         template.write('RandomSeed = {0}\n'.\
                            format(params[idx]['Seed']))
         template.write('EOSSoundSpeed = {0:6e}\n'.\
@@ -191,6 +193,8 @@ if Fiducials:
                 # This 4pi is for CTMHD units
                 template.write('MachNumber = {0:4f}\n'.\
                                format(fparams[idx]['Mach Number']))
+                template.write('RandomForcingMachNumber = {0:4f}\n'.\
+                               format(params[idx]['Mach Number']))
                 template.write('RandomSeed = {0}\n'.\
                                format(fparams[idx]['Seed']))
                 template.write('EOSSoundSpeed = {0:6e}\n'.\

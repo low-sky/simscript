@@ -5,7 +5,8 @@ import sys
 
 if sys.argv[1] is None:
     try:
-        simdir = os.listdir('/global/scratch/eros/runs/SimSuite3/')
+#        simdir = os.listdir('/global/scratch/eros/runs/SimSuite3/')
+        simdir = os.listdir('/lustre/home/eros/SimSuite4')
     except OSError:
         simdir = os.listdir('.')
 else:
@@ -19,6 +20,8 @@ for nom in simnames:
     if sys.argv[2] is None:
         if os.access('/global/scratch/eros/runs/',os.W_OK):
             target_dir = '/global/scratch/eros/runs/'
+        elif: os.access('/lustre/home/eros/runs/',os.W_OK):
+            target_dir = '/lustre/home/eros/runs/'
         else:
             target_dir ='./'
     else:
