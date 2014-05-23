@@ -1,0 +1,79 @@
+#!/bin/bash
+
+#PBS -S /bin/bash
+#PBS -l pmem=2000mb
+#PBS -l procs=1
+#PBS -l walltime=24:00:00
+#PBS -m bea
+#PBS -M erosolow@ualberta.ca
+#PBS -l epilogue=/home/eros/bin/epilogue.sh
+
+export EHOME=/lustre/home/eros/
+export PPDIR=$EHOME/code/simscript/postproc/
+export PPOUTDIR=/lustre/home/eros/fitsfiles/
+export PYTHONPATH=$PYTHONPATH+':'+$PPDIR
+source $EHOME/yt-x86_64/bin/activate
+cd $PBS_O_WORKDIR
+echo "Current working directory is `pwd`"
+
+cd /lustre/home/eros/SimSuite4/Design0
+python $EHOME/code/simscript/summary_plots.py
+cd /lustre/home/eros/SimSuite4/Design1
+python $EHOME/code/simscript/summary_plots.py
+cd /lustre/home/eros/SimSuite4/Design2
+python $EHOME/code/simscript/summary_plots.py
+cd /lustre/home/eros/SimSuite4/Design3
+python $EHOME/code/simscript/summary_plots.py
+cd /lustre/home/eros/SimSuite4/Design4
+python $EHOME/code/simscript/summary_plots.py
+cd /lustre/home/eros/SimSuite4/Design5
+python $EHOME/code/simscript/summary_plots.py
+cd /lustre/home/eros/SimSuite4/Design6
+python $EHOME/code/simscript/summary_plots.py
+cd /lustre/home/eros/SimSuite4/Design7
+python $EHOME/code/simscript/summary_plots.py
+cd /lustre/home/eros/SimSuite4/Design8
+python $EHOME/code/simscript/summary_plots.py
+cd /lustre/home/eros/SimSuite4/Design9
+python $EHOME/code/simscript/summary_plots.py
+cd /lustre/home/eros/SimSuite4/Design10
+python $EHOME/code/simscript/summary_plots.py
+cd /lustre/home/eros/SimSuite4/Design11
+python $EHOME/code/simscript/summary_plots.py
+cd /lustre/home/eros/SimSuite4/Design12
+python $EHOME/code/simscript/summary_plots.py
+cd /lustre/home/eros/SimSuite4/Design13
+python $EHOME/code/simscript/summary_plots.py
+cd /lustre/home/eros/SimSuite4/Design14
+python $EHOME/code/simscript/summary_plots.py
+cd /lustre/home/eros/SimSuite4/Design15
+python $EHOME/code/simscript/summary_plots.py
+cd /lustre/home/eros/SimSuite4/Design16
+python $EHOME/code/simscript/summary_plots.py
+cd /lustre/home/eros/SimSuite4/Design17
+python $EHOME/code/simscript/summary_plots.py
+cd /lustre/home/eros/SimSuite4/Design18
+python $EHOME/code/simscript/summary_plots.py
+cd /lustre/home/eros/SimSuite4/Design19
+python $EHOME/code/simscript/summary_plots.py
+cd /lustre/home/eros/SimSuite4/Design20
+python $EHOME/code/simscript/summary_plots.py
+cd /lustre/home/eros/SimSuite4/Design21
+python $EHOME/code/simscript/summary_plots.py
+cd /lustre/home/eros/SimSuite4/Design22
+python $EHOME/code/simscript/summary_plots.py
+cd /lustre/home/eros/SimSuite4/Design23
+python $EHOME/code/simscript/summary_plots.py
+cd /lustre/home/eros/SimSuite4/Fiducial0
+python $EHOME/code/simscript/summary_plots.py
+cd /lustre/home/eros/SimSuite4/Fiducial1
+python $EHOME/code/simscript/summary_plots.py
+cd /lustre/home/eros/SimSuite4/Fiducial2
+python $EHOME/code/simscript/summary_plots.py
+cd /lustre/home/eros/SimSuite4/Fiducial3
+python $EHOME/code/simscript/summary_plots.py
+cd /lustre/home/eros/SimSuite4/Fiducial4
+python $EHOME/code/simscript/summary_plots.py
+cd /lustre/home/eros/SimSuite4/
+tar cvfz FIGURES.tar.gz `find . | grep Figures`
+
