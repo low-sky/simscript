@@ -208,6 +208,7 @@ n = [int(options.size), int(options.size), int(options.size)]
 # range of perturbation length scale in units of the smallest side of the domain
 kmin = int(options.kmin)
 kmax = int(options.kmax)
+print('Size: {0}, kmin: {1}, kmax:{2}'.format(n,kmin,kmax))
 if kmin > kmax or kmin < 0 or kmax < 0:
     print "kmin must be < kmax, with kmin > 0, kmax > 0.  See --help."
     sys.exit(0)
