@@ -4,7 +4,7 @@
 #PBS -l pmem=2000mb
 #PBS -l procs=1
 #PBS -l walltime=24:00:00
-#PBS -m bea
+#PBS -m ea
 #PBS -M erosolow@ualberta.ca
 #PBS -l epilogue=/home/eros/simscript/epilogue.sh
 
