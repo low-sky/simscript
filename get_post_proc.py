@@ -5,8 +5,9 @@ import sys
 
 if len(sys.argv) == 1:
     try:
-#        simdir = os.listdir('/global/scratch/eros/runs/SimSuite3/')
-        simdir = '/lustre/home/eros/runs/SimSuite4/'
+        #        simdir = os.listdir('/global/scratch/eros/runs/SimSuite3/')
+        #        simdir = '/lustre/home/eros/runs/SimSuite4/'
+        simdir = '/lustre/home/eros/SimSuite5/'
     except OSError:
         simdir = os.listdir('.')
 else:

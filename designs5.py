@@ -26,16 +26,16 @@ RootGridSize = 128
 
 # Design parameters
 logVPmin = np.log10(2)
-logVPmax = logVPmin+1
+logVPmax = logVPmin+np.log10(5)
 
-bmin = 0
-bmax = 1
+bmin = 0.2
+bmax = 0.8
 
 logbetamin = -1.0
 logbetamax = 1.0
 
 MachMin = 5
-MachMax = 20
+MachMax = 15
 
 np.random.seed(8675309)
 seeds = np.random.randint(long(2)**24,size=values.shape[0])

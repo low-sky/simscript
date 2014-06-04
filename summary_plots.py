@@ -5,13 +5,17 @@ import sys
 
 from yt.mods import *
 
-stepnames = [name for name in os.listdir(os.getcwd()) if os.path.isdir(name)]
-stepnames2 = [name for name in stepnames if 'DD002' in name]
-stepnames3 = [name for name in stepnames if 'DD003' in name]
-stepnames = stepnames2+stepnames3
+if len(sys.argv)>1:
+    stepnames = sys.argv[1:]
+else:
+    stepnames = [name for name in os.listdir(os.getcwd()) if os.path.isdir(name)]
+    stepnames2 = [name for name in stepnames if 'DD002' in name]
+    stepnames3 = [name for name in stepnames if 'DD003' in name]
+    stepnames = stepnames2+stepnames3
+
 designname = (os.getcwd().split('/'))[-1]
 sides = ('x','y','z')
-quants = ('Density','TotalEnergy')
+quants = ('Density','TotalEnergy','DrivingField1','DrivingField2')
 dx = {'x':'DrivingField2','y':'DrivingField1','z':'DrivingField1'}
 dy = {'x':'DrivingField3','y':'DrivingField3','z':'DrivingField2'}
 if not os.path.isdir('Figures'):
