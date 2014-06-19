@@ -9,7 +9,7 @@ from astropy.table import Table
 
 values = np.loadtxt('Design6.csv',skiprows=1,delimiter=',')
 
-rootdir = os.path.expanduser("~")+'/SimSuite7/'
+rootdir = os.path.expanduser("~")+'/SimSuite6/'
 rootname = 'Design'
 fid_rootname = 'Fiducial'
 GenerateFields = True
@@ -31,13 +31,13 @@ logVPmax = logVPmin+np.log10(5)
 bmin = 0.2
 bmax = 0.8
 
-logbetamin = -0.2
-logbetamax = 2.0
+logbetamin = -1.0
+logbetamax = 1.0
 
 MachMin = 5
-MachMax = 12
+MachMax = 15
 
-np.random.seed(6874301)
+np.random.seed(8675309)
 seeds = np.random.randint(long(2)**24,size=values.shape[0])
 
 logVPvals = logVPmin+(logVPmax-logVPmin)*values[:,0]
@@ -58,9 +58,12 @@ density = ((5*MachVals**2*SoundSpeed**2)/
 tcross = (BoxSize/(MachVals*SoundSpeed)).to(u.s)
 Bvals = ((8*np.pi*density*SoundSpeed**2/betavals)**(0.5)).value*(u.G)
 
-params = Table([bvals,VPvals, betavals, MachVals,kMin,kMax,seeds,Tvals,Bvals],\
-                    names=('Solenoidal Fraction','Virial Parameter','Plasma beta','Mach Number',
-                           'kMin','kMax','Seed','Kinetic Temperature','Magnetic Field'))
+params = Table([Tvals,bvals,Bvals,MachVals,kMin,kMax,seeds],\
+                    names=('Kinetic Temperature','Solenoidal Fraction','Magnetic Field','Mach Number','kMin','kMax','Seed'))
+
+
+params['Virial Parameter'] = VPvals
+params['Plasma Beta'] = betavals
 params['Index'] = np.arange(values.shape[0]).astype('int')
 params['Sound Speed']=SoundSpeed.to(u.cm/u.s)
 params['Crossing Time']=tcross.to(u.s)
@@ -70,58 +73,58 @@ params['Density']=density
 params['kMin'] = kminVals
 params['kMax'] = kmaxVals
 
-for idx,bval in enumerate(bvals):
+# for idx,bval in enumerate(bvals):
 
-    dirname = rootdir+rootname+str(params['Index'][idx])+'/'
-    if not os.path.isdir(dirname):
-        os.makedirs(dirname)
+#     dirname = rootdir+rootname+str(params['Index'][idx])+'/'
+#     if not os.path.isdir(dirname):
+#         os.makedirs(dirname)
 
-    # Generate a driving field into the RandomField1,2,3 etc.
-    if GenerateFields:
-        callstring = "perturbation_enzo.py --size={5} --alpha={4} --kmin={0} --kmax={1} --f_solenoidal={2:.3f} --seed={3}".\
-            format(params[idx]['kMin'],
-                   params[idx]['kMax'],
-                   params[idx]['Solenoidal Fraction'],
-                   params[idx]['Seed'],
-                   params[idx]['PL Index'],
-                   params[idx]['Box Size'])
-        callstring = 'python '+os.getcwd()+'/'+callstring
-        print(callstring)
-        subprocess.call(callstring,shell=True)
-        shutil.move(os.getcwd()+'/RandomField1',dirname)
-        shutil.move(os.getcwd()+'/RandomField2',dirname)
-        shutil.move(os.getcwd()+'/RandomField3',dirname)
+#     # Generate a driving field into the RandomField1,2,3 etc.
+#     if GenerateFields:
+#         callstring = "perturbation_enzo.py --size={5} --alpha={4} --kmin={0} --kmax={1} --f_solenoidal={2:.3f} --seed={3}".\
+#             format(params[idx]['kMin'],
+#                    params[idx]['kMax'],
+#                    params[idx]['Solenoidal Fraction'],
+#                    params[idx]['Seed'],
+#                    params[idx]['PL Index'],
+#                    params[idx]['Box Size'])
+#         callstring = 'python '+os.getcwd()+'/'+callstring
+#         print(callstring)
+#         subprocess.call(callstring,shell=True)
+#         shutil.move(os.getcwd()+'/RandomField1',dirname)
+#         shutil.move(os.getcwd()+'/RandomField2',dirname)
+#         shutil.move(os.getcwd()+'/RandomField3',dirname)
 
-    shutil.copy(os.getcwd()+'/templates/MHDstart.pbs',dirname)
-    shutil.copy(os.getcwd()+'/templates/MHDrestart.pbs',dirname)
-    shutil.copy(os.getcwd()+'/templates/DrivenTurbulenceCTMHD',dirname)
-    with open(dirname+'DrivenTurbulenceCTMHD','a') as template:
-        template.write('TopGridDimensions = {0} {1} {2}\n'.\
-                           format(params[idx]['Box Size'],
-                                  params[idx]['Box Size'],
-                                  params[idx]['Box Size']))
-        template.write('InitialBfield = {0:6e}\n'.\
-                           format(params[idx]['Magnetic Field']/\
-                                      np.sqrt(4*np.pi)))
-                       # This 4pi is for CTMHD units
-        template.write('MachNumber = {0:4f}\n'.\
-                           format(params[idx]['Mach Number']))
-        template.write('RandomForcingMachNumber = {0:4f}\n'.\
-                           format(params[idx]['Mach Number']))
-        template.write('RandomSeed = {0}\n'.\
-                           format(params[idx]['Seed']))
-        template.write('EOSSoundSpeed = {0:6e}\n'.\
-                           format(params[idx]['Sound Speed']))
-        template.write('SoundVelocity = {0:6e}\n'.\
-                           format(params[idx]['Sound Speed']))
-        template.write('TimeUnits = {0:6e}\n'.\
-                           format(params[idx]['Crossing Time']))
-        template.write('Density = {0:6e}\n'.\
-                           format(params[idx]['Density']))
-        template.close()
-    print(dirname)
-params.write('d6_parameter_table.ascii',format='ascii.fixed_width')
-params.write('d6_parameter_table.csv',format='ascii',delimiter=',')
+#     shutil.copy(os.getcwd()+'/templates/MHDstart.pbs',dirname)
+#     shutil.copy(os.getcwd()+'/templates/MHDrestart.pbs',dirname)
+#     shutil.copy(os.getcwd()+'/templates/DrivenTurbulenceCTMHD',dirname)
+#     with open(dirname+'DrivenTurbulenceCTMHD','a') as template:
+#         template.write('TopGridDimensions = {0} {1} {2}\n'.\
+#                            format(params[idx]['Box Size'],
+#                                   params[idx]['Box Size'],
+#                                   params[idx]['Box Size']))
+#         template.write('InitialBfield = {0:6e}\n'.\
+#                            format(params[idx]['Magnetic Field']/\
+#                                       np.sqrt(4*np.pi)))
+#                        # This 4pi is for CTMHD units
+#         template.write('MachNumber = {0:4f}\n'.\
+#                            format(params[idx]['Mach Number']))
+#         template.write('RandomForcingMachNumber = {0:4f}\n'.\
+#                            format(params[idx]['Mach Number']))
+#         template.write('RandomSeed = {0}\n'.\
+#                            format(params[idx]['Seed']))
+#         template.write('EOSSoundSpeed = {0:6e}\n'.\
+#                            format(params[idx]['Sound Speed']))
+#         template.write('SoundVelocity = {0:6e}\n'.\
+#                            format(params[idx]['Sound Speed']))
+#         template.write('TimeUnits = {0:6e}\n'.\
+#                            format(params[idx]['Crossing Time']))
+#         template.write('Density = {0:6e}\n'.\
+#                            format(params[idx]['Density']))
+#         template.close()
+#     print(dirname)
+# params.write('d6_parameter_table.ascii',format='ascii.fixed_width')
+# params.write('d6_parameter_table.csv',format='ascii',delimiter=',')
 
 if Fiducials:
     fidval = 0.5*np.ones(NFiducials)
