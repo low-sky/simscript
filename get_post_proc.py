@@ -8,7 +8,7 @@ if len(sys.argv) == 1:
         #        simdir = os.listdir('/global/scratch/eros/runs/SimSuite3/')
         #        simdir = '/lustre/home/eros/runs/SimSuite4/'
         #simdir = '/lustre/home/eros/SimSuite5/'
-        simdir = '/lustre/home/eros/SimSuite6/'
+        simdir = '/lustre/home/eros/SimSuite8/'
     except OSError:
         simdir = os.listdir('.')
 else:
@@ -28,7 +28,7 @@ for nom in simnames:
             target_dir ='./'
     else:
         target_dir = sys.argv[2]
-    target_name = 'Radmc6_{0}.pbs'.format(nom)
+    target_name = 'Radmc7_{0}.pbs'.format(nom)
     shutil.copy(os.getcwd()+'/templates/Radmc_template_'+un[1]+'.pbs',target_dir+target_name)
     with open(target_dir+target_name,'a') as template:
         for face in facelist:
