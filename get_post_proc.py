@@ -28,7 +28,7 @@ for nom in simnames:
             target_dir ='./'
     else:
         target_dir = sys.argv[2]
-    target_name = 'Radmc7_{0}.pbs'.format(nom)
+    target_name = 'Radmc8_{0}.pbs'.format(nom)
     shutil.copy(os.getcwd()+'/templates/Radmc_template_'+un[1]+'.pbs',target_dir+target_name)
     with open(target_dir+target_name,'a') as template:
         for face in facelist:

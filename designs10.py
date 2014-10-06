@@ -7,9 +7,9 @@ import subprocess
 import shutil
 from astropy.table import Table
 
-values = np.loadtxt('Design6.csv',skiprows=1,delimiter=',')
+values = np.loadtxt('xd5n25.txt')
 
-rootdir = os.path.expanduser("~")+'/SimSuite9/'
+rootdir = os.path.expanduser("~")+'/SimSuite10/'
 rootname = 'Design'
 fid_rootname = 'Fiducial'
 GenerateFields = True
@@ -20,36 +20,41 @@ NFiducials = 5
 
 BoxSize = 10*u.pc
 Tvals = 10.0*u.K*np.ones(values.shape[0])
-kMin = 2*np.ones(values.shape[0]).astype('int')
-kMax = 4*np.ones(values.shape[0]).astype('int')
-RootGridSize = 128
+kMin = (np.ceil(4*values[:,5])).astype(np.int)
+# Trap the bottom case.
+kMin[kMin==0]=1
+kMax = 2*kMin
+
+RootGridSize = 256
 
 # Design parameters
 logVPmin = np.log10(2)
 logVPmax = logVPmin+np.log10(5)
 
-bmin = 0.33
-bmax = 0.66
+bmin = 0.25
+bmax = 0.75
 
 logbetamin = -0.3
-logbetamax = 0.3
+logbetamax = 1.0
 
 MachMin = 5
-MachMax = 12
+MachMax = 15
 
 np.random.seed(649810806)
 seeds = np.random.randint(long(2)**24,size=values.shape[0])
 
-logVPvals = logVPmin+(logVPmax-logVPmin)*values[:,0]
-logbetavals = logbetamin + (logbetamax-logbetamin)*values[:,2]
+logVPvals = logVPmin+(logVPmax-logVPmin)*values[:,1]
+logbetavals = logbetamin + (logbetamax-logbetamin)*values[:,3]
 
 #fundamental design params
-bvals = bmin + (bmax-bmin)*values[:,1]
-MachVals = MachMin + (MachMax-MachMin)*values[:,3]
+bvals = bmin + (bmax-bmin)*values[:,2]
+MachVals = MachMin + (MachMax-MachMin)*values[:,4]
 betavals = (1e1**logbetavals)
 VPvals = (1e1**logVPvals)
-kminVals = 2+2*values[:,4]
-kmaxVals = 2*kminVals
+kminVals = kMin
+kmaxVals = kMax
+print(kminVals)
+print(kmaxVals)
 
 #Derived parameters
 SoundSpeed = ((const.k_B*Tvals/(2.33*const.m_n))**(0.5)).to(u.cm/u.s)
@@ -70,11 +75,11 @@ params['Crossing Time']=tcross.to(u.s)
 params['PL Index']=2*np.ones(values.shape[0])
 params['Box Size']=RootGridSize*np.ones(values.shape[0]).astype('int')
 params['Density']=density
-params['kMin'] = kminVals
-params['kMax'] = kmaxVals
+params['kMin'] = kminVals.astype(np.int)
+params['kMax'] = kmaxVals.astype(np.int)
 
 for idx,bval in enumerate(bvals):
-     dirname = rootdir+rootname+str(params['Index'][idx])+'/'
+     dirname = rootdir+rootname+str(params['Index'][idx]).zfill(2)+'/'
      if not os.path.isdir(dirname):
           os.makedirs(dirname)
          
@@ -122,8 +127,8 @@ for idx,bval in enumerate(bvals):
                         format(params[idx]['Density']))
          template.close()
      print(dirname)
-params.write('d8_parameter_table.ascii',format='ascii.fixed_width')
-params.write('d8_parameter_table.csv',format='ascii',delimiter=',')
+params.write('d10_parameter_table.ascii',format='ascii.fixed_width')
+params.write('d10_parameter_table.csv',format='ascii',delimiter=',')
 
 if Fiducials:
     fidval = 0.5*np.ones(NFiducials)
@@ -132,7 +137,7 @@ if Fiducials:
     logbetavals = logbetamin + (logbetamax-logbetamin)*fidval
     Tvals = 10*np.ones(NFiducials)*u.K
     kMin = 2*np.ones(NFiducials).astype('int')
-    kMax = 8*np.ones(NFiducials).astype('int')
+    kMax = 4*np.ones(NFiducials).astype('int')
 
     bvals = bmin + (bmax-bmin)*fidval
     MachVals = MachMin + (MachMax-MachMin)*fidval
@@ -145,7 +150,7 @@ if Fiducials:
     tcross = (BoxSize/(MachVals*SoundSpeed)).to(u.s)
     Bvals = ((8*np.pi*density*SoundSpeed**2/betavals)**(0.5)).value*(u.G)
     kminVals = 2*np.ones(len(betavals))
-    kmaxVals = 8*np.ones(len(betavals))
+    kmaxVals = 4*np.ones(len(betavals))
 
     fparams = Table([Tvals,bvals,Bvals,MachVals,kMin,kMax,seeds],\
                    names=('Kinetic Temperature','Solenoidal Fraction',
@@ -166,7 +171,7 @@ if Fiducials:
 
     for idx,bval in enumerate(bvals):
 
-        dirname = rootdir+fid_rootname+str(fparams['Index'][idx])+'/'
+        dirname = rootdir+fid_rootname+str(fparams['Index'][idx]).zfill(2)+'/'
         if not os.path.isdir(dirname):
             os.makedirs(dirname)
             # Generate a driving field into the RandomField1,2,3 etc.
@@ -213,5 +218,5 @@ if Fiducials:
                                format(fparams[idx]['Density']))
                 template.close()
                 print(dirname)
-    fparams.write('d8_fiducial_table.ascii',format='ascii.fixed_width')
-    fparams.write('d8_fiducial_table.csv',format='ascii',delimiter=',')
+    fparams.write('d10_fiducial_table.ascii',format='ascii.fixed_width')
+    fparams.write('d10_fiducial_table.csv',format='ascii',delimiter=',')
