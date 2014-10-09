@@ -12,7 +12,7 @@ values = np.loadtxt('xd5n25.txt')
 rootdir = os.path.expanduser("~")+'/SimSuite10/'
 rootname = 'Design'
 fid_rootname = 'Fiducial'
-GenerateFields = True
+GenerateFields = False
 Fiducials = True
 NFiducials = 5
 # Domain Definition
@@ -28,7 +28,7 @@ kMax = 2*kMin
 RootGridSize = 256
 
 # Design parameters
-logVPmin = np.log10(2)
+logVPmin = np.log10(1)
 logVPmax = logVPmin+np.log10(5)
 
 bmin = 0.25
@@ -59,7 +59,7 @@ print(kmaxVals)
 #Derived parameters
 SoundSpeed = ((const.k_B*Tvals/(2.33*const.m_n))**(0.5)).to(u.cm/u.s)
 density = ((5*MachVals**2*SoundSpeed**2)/
-           (6*const.G*VPvals*BoxSize**2)).to(u.g/u.cm**3)
+           (2*const.G*VPvals*BoxSize**2)).to(u.g/u.cm**3)
 tcross = (BoxSize/(MachVals*SoundSpeed)).to(u.s)
 Bvals = ((8*np.pi*density*SoundSpeed**2/betavals)**(0.5)).value*(u.G)
 
