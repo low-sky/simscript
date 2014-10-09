@@ -15,7 +15,7 @@ np.random.seed(649810806)
 rootdir = os.path.expanduser("~")+'/SimSuite10/'
 rootname = 'Design'
 fid_rootname = 'Fiducial'
-GenerateFields = False
+GenerateFields = True
 AppendPermutations = 1
 Fiducials = True
 NFiducials = 5
