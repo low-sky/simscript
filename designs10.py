@@ -7,15 +7,29 @@ import subprocess
 import shutil
 from astropy.table import Table
 
-values = np.loadtxt('xd5n25.txt')
+
+# Start with the seed
+np.random.seed(649810806)
+
 
 rootdir = os.path.expanduser("~")+'/SimSuite10/'
 rootname = 'Design'
 fid_rootname = 'Fiducial'
 GenerateFields = False
-AppendPermutation = True
+AppendPermutations = 1
 Fiducials = True
 NFiducials = 5
+
+# Load Design; permute if requested.
+values = np.loadtxt('xd5n25.txt')
+if AppendPermutations>0:
+     originals = np.copy(values)
+     for counter in np.arange(AppendPermutations):
+          newvalues = np.copy(originals)
+          np.random.shuffle(newvalues.T)
+          values = np.concatenate((values,newvalues),axis=0)
+          
+
 # Domain Definition
 # Fixed parameters for this simulation.
 
@@ -41,7 +55,6 @@ logbetamax = 1.0
 MachMin = 5
 MachMax = 15
 
-np.random.seed(649810806)
 seeds = np.random.randint(long(2)**24,size=values.shape[0])
 
 logVPvals = logVPmin+(logVPmax-logVPmin)*values[:,0]
