@@ -13,6 +13,7 @@ rootdir = os.path.expanduser("~")+'/SimSuite10/'
 rootname = 'Design'
 fid_rootname = 'Fiducial'
 GenerateFields = False
+AppendPermutation = True
 Fiducials = True
 NFiducials = 5
 # Domain Definition
@@ -20,7 +21,7 @@ NFiducials = 5
 
 BoxSize = 10*u.pc
 Tvals = 10.0*u.K*np.ones(values.shape[0])
-kMin = (np.ceil(4*values[:,5])).astype(np.int)
+kMin = (np.ceil(4*values[:,4])).astype(np.int)
 # Trap the bottom case.
 kMin[kMin==0]=1
 kMax = 2*kMin
@@ -43,12 +44,12 @@ MachMax = 15
 np.random.seed(649810806)
 seeds = np.random.randint(long(2)**24,size=values.shape[0])
 
-logVPvals = logVPmin+(logVPmax-logVPmin)*values[:,1]
-logbetavals = logbetamin + (logbetamax-logbetamin)*values[:,3]
+logVPvals = logVPmin+(logVPmax-logVPmin)*values[:,0]
+logbetavals = logbetamin + (logbetamax-logbetamin)*values[:,2]
 
 #fundamental design params
-bvals = bmin + (bmax-bmin)*values[:,2]
-MachVals = MachMin + (MachMax-MachMin)*values[:,4]
+bvals = bmin + (bmax-bmin)*values[:,1]
+MachVals = MachMin + (MachMax-MachMin)*values[:,3]
 betavals = (1e1**logbetavals)
 VPvals = (1e1**logVPvals)
 kminVals = kMin
