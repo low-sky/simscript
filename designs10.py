@@ -28,8 +28,8 @@ kMax = 2*kMin
 RootGridSize = 256
 
 # Design parameters
-logVPmin = np.log10(1)
-logVPmax = logVPmin+np.log10(5)
+logVPmin = np.log10(0.5)
+logVPmax = logVPmin+np.log10(10)
 
 bmin = 0.25
 bmax = 0.75
