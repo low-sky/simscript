@@ -2,7 +2,7 @@
 
 #PBS -S /bin/tcsh
 #PBS -l pmem=2000mb
-#PBS -l procs=32
+#PBS -l procs=64
 #PBS -l walltime=48:00:00
 #PBS -m ea
 #PBS -M erosolow@ualberta.ca
@@ -19,6 +19,6 @@ cd $PBS_O_WORKDIR
 echo "Current working directory is `pwd`"
 
 echo "Starting run at: `date`"
-mpirun -n 32 /home/eros/enzo-ssro.exe -r DD0021/DD0021
+mpirun -n 64 /home/eros/enzo-ssro.exe -r DD0021/DD0021
 
 echo "Program diffuse finished with exit code $? at: `date`"

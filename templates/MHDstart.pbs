@@ -19,6 +19,6 @@ cd $PBS_O_WORKDIR
 echo "Current working directory is `pwd`"
 
 echo "Starting run at: `date`"
-mpirun -n 32 /home/eros/enzo-ssro.exe DrivenTurbulenceCTMHD
+mpirun -n 64 /home/eros/enzo-ssro.exe DrivenTurbulenceCTMHD
 
 echo "Program diffuse finished with exit code $? at: `date`"

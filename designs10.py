@@ -15,7 +15,7 @@ np.random.seed(649810806)
 rootdir = os.path.expanduser("~")+'/SimSuite10/'
 rootname = 'Design'
 fid_rootname = 'Fiducial'
-GenerateFields = True
+GenerateFields = False
 AppendPermutations = 1
 Fiducials = True
 NFiducials = 5
@@ -43,11 +43,11 @@ kMax = 2*kMin
 RootGridSize = 256
 
 # Design parameters
-logVPmin = np.log10(0.5)
+logVPmin = np.log10(1)
 logVPmax = logVPmin+np.log10(10)
 
 bmin = 0.25
-bmax = 0.75
+bmax = 1.0
 
 logbetamin = -0.3
 logbetamax = 1.0
@@ -76,7 +76,9 @@ density = ((5*MachVals**2*SoundSpeed**2)/
            (2*const.G*VPvals*BoxSize**2)).to(u.g/u.cm**3)
 tcross = (BoxSize/(MachVals*SoundSpeed)).to(u.s)
 Bvals = ((8*np.pi*density*SoundSpeed**2/betavals)**(0.5)).value*(u.G)
-
+AlfvenSpeed = Bvals/np.sqrt(4*np.pi*density)
+AlfvenMach = MachVals*SoundSpeed/(AlfvenSpeed)
+MassToFlux = (20/9.)**0.5*AlfvenMach/VPvals**0.5
 params = Table([Tvals,bvals,Bvals,MachVals,kMin,kMax,seeds],\
                     names=('Kinetic Temperature','Solenoidal Fraction','Magnetic Field','Mach Number','kMin','kMax','Seed'))
 
@@ -91,6 +93,9 @@ params['Box Size']=RootGridSize*np.ones(values.shape[0]).astype('int')
 params['Density']=density
 params['kMin'] = kminVals.astype(np.int)
 params['kMax'] = kmaxVals.astype(np.int)
+params['AlfvenSpeed'] = AlfvenSpeed
+params['AlfvenMach'] = AlfvenMach
+params['MassToFlux'] = MassToFlux
 
 for idx,bval in enumerate(bvals):
      dirname = rootdir+rootname+str(params['Index'][idx]).zfill(2)+'/'
