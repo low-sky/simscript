@@ -170,6 +170,9 @@ if Fiducials:
     Bvals = ((8*np.pi*density*SoundSpeed**2/betavals)**(0.5)).value*(u.G)
     kminVals = 2*np.ones(len(betavals))
     kmaxVals = 4*np.ones(len(betavals))
+    AlfvenSpeed = Bvals/np.sqrt(4*np.pi*density)
+    AlfvenMach = MachVals*SoundSpeed/(AlfvenSpeed)
+    MassToFlux = (20/9.)**0.5*AlfvenMach/VPvals**0.5
 
     fparams = Table([Tvals,bvals,Bvals,MachVals,kMin,kMax,seeds],\
                    names=('Kinetic Temperature','Solenoidal Fraction',
@@ -187,6 +190,9 @@ if Fiducials:
     fparams['Density']=density
     fparams['kMin'] = kminVals
     fparams['kMax'] = kmaxVals
+    fparams['AlfvenSpeed'] = AlfvenSpeed
+    fparams['AlfvenMach'] = AlfvenMach
+    fparams['MassToFlux'] = MassToFlux
 
     for idx,bval in enumerate(bvals):
 
