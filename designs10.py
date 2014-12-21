@@ -6,7 +6,7 @@ import astropy.constants as const
 import subprocess
 import shutil
 from astropy.table import Table
-
+import pdb
 
 # Start with the seed
 np.random.seed(649810806)
@@ -103,21 +103,21 @@ for idx,bval in enumerate(bvals):
            os.makedirs(dirname)
          
 #           # Generate a driving field into the RandomField1,2,3 etc.
-#      if GenerateFields:
-#           callstring = "perturbation_enzo.py --size={5} --alpha={4} --kmin={0} --kmax={1} --f_solenoidal={2:.3f} --seed={3}".\
-#                        format(params[idx]['kMin'],
-#                               params[idx]['kMax'],
-#                               params[idx]['Solenoidal Fraction'],
-#                               params[idx]['Seed'],
-#                               params[idx]['PL Index'],
-#                               params[idx]['Box Size'])
-#           callstring = 'python '+os.getcwd()+'/'+callstring
-#           print(callstring)
-#           subprocess.call(callstring,shell=True)
-#           shutil.move(os.getcwd()+'/RandomField1',dirname)
-#           shutil.move(os.getcwd()+'/RandomField2',dirname)
-#           shutil.move(os.getcwd()+'/RandomField3',dirname)
-
+      if GenerateFields:
+           callstring = "perturbation_enzo.py --size={5} --alpha={4} --kmin={0} --kmax={1} --f_solenoidal={2:.3f} --seed={3}".\
+                        format(params[idx]['kMin'],
+                               params[idx]['kMax'],
+                               params[idx]['Solenoidal Fraction'],
+                               params[idx]['Seed'],
+                               params[idx]['PL Index'],
+                               params[idx]['Box Size'])
+           callstring = 'python '+os.getcwd()+'/'+callstring
+           print(callstring)
+           subprocess.call(callstring,shell=True)
+           shutil.move(os.getcwd()+'/RandomField1',dirname)
+           shutil.move(os.getcwd()+'/RandomField2',dirname)
+           shutil.move(os.getcwd()+'/RandomField3',dirname)
+           pdb.set_trace()
       shutil.copy(os.getcwd()+'/templates/MHDstart.pbs',dirname)
       shutil.copy(os.getcwd()+'/templates/MHDrestart.pbs',dirname)
       shutil.copy(os.getcwd()+'/templates/DrivenTurbulenceCTMHD',dirname)
