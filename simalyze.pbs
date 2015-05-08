@@ -1,0 +1,20 @@
+#!/bin/bash
+
+#PBS -S /bin/bash
+#PBS -l pmem=2000mb
+#PBS -l procs=1
+#PBS -l walltime=1:30:00
+#PBS -m bea
+#PBS -M erosolow@ualberta.ca
+#PBS -l epilogue=/home/eros/bin/epilogue.sh
+
+export EHOME=/lustre/home/eros/
+#export PPDIR=$EHOME/code/simscript/postproc/
+#export PPOUTDIR=/lustre/home/eros/fitsfiles/
+export PYTHONPATH=$PYTHONPATH+':'+$PPDIR
+source $EHOME/yt-x86_64/bin/activate
+cd $PBS_O_WORKDIR
+echo "Current working directory is `pwd`"
+export HDF5_DISABLE_VERSION_CHECK=1
+
+python $EHOME/code/simscript/Msigsig.py
