@@ -19,7 +19,7 @@ logVPmax = np.log10(3)
 logVPvals = logVPmin+(logVPmax-logVPmin)*values[:,1]
 VPvals = 1e1**logVPvals
 
-logZmin = np.log10(0.002)
+logZmin = np.log10(0.003)
 logZmax = np.log10(2)
 logZvals = logZmin + (logZmax-logZmin)*values[:,2]
 Zvals = 1e1**(logZvals)
