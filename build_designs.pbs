@@ -1,9 +1,9 @@
-#!/bin/csh
+#!/bin/csh -f
 
 #PBS -S /bin/tcsh
-#PBS -l pmem=2000mb
-#PBS -l procs=1
-#PBS -l walltime=6:00:00
+#PBS -l mem=24gb
+#PBS -l nodes=1:ppn=12
+#PBS -l walltime=1:00:00
 #PBS -m bea
 #PBS -M erosolow@ualberta.ca
 #PBS -l epilogue=/home/eros/bin/epilogue.sh
@@ -15,6 +15,6 @@ cd $PBS_O_WORKDIR
 echo "Current working directory is `pwd`"
 
 echo "Starting run at: `date`"
-/home/eros/anaconda/bin/python designs.py
+/home/eros/anaconda/bin/python designs8_big.py
 
 echo "Program diffuse finished with exit code $? at: `date`"
