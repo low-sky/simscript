@@ -190,11 +190,11 @@ def MakeFits (fitsfile='image.fits', dpc = None,
             
     if(dpc != None):
         if (dpc != 0):
-            hd['CDELT1'] = -xsize/(dpc*3.086e18)*(2*pi/360)
+            hd['CDELT1'] = -xsize/(dpc*3.086e18)*(2*np.pi/360)
             hd['CRPIX1'] = xnum/2
             hd['CRVAL1'] = 180e0
             hd['CTYPE1'] = 'RA---CAR'
-            hd['CDELT2'] = ysize/(dpc*3.086e18)*(2*pi/360)
+            hd['CDELT2'] = ysize/(dpc*3.086e18)*(2*np.pi/360)
             hd['CRVAL2'] = 0.0
             hd['CTYPE2'] = 'DEC--CAR'
             hd['EQUINOX'] = 2000.0
