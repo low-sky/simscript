@@ -1,6 +1,6 @@
 import commands
 import sys
-import postproc as pp
+import postproc_yt as pp
 import os
 import shutil
 targetdir = sys.argv[1]
@@ -10,11 +10,13 @@ level = float(sys.argv[4])
 
 ppdir = os.getenv('PPDIR')
 outdir = os.getenv('PPOUTDIR')
+#ppdir = '/home/eros/code/simscript/postproc/'
 D = pp.FileSetup(targetdir,face=face,level=level,timestep=timestep,ppdir=ppdir)
-os.chdir(D['TempDir'])
-pp.ProblemSetup(D['FileName'], face = face, dust_temp = D['GasTemp'])
 
-command = ppdir+'radmc3d image npix '+str(int(D['GridSize']))+' iline 1 widthkms 10 linenlam 500 loadlambda fluxcons inclline linelist nostar writepop doppcatch sizepc 10'
+#pp.ProblemSetup(D['FileName'], face = face, dust_temp = D['GasTemp'])
+
+os.chdir(D['TempDir'])
+command = ppdir+'radmc3d image npix '+str(int(D['GridSize']))+' iline 1 widthkms 10 linenlam 500 loadlambda fluxcons inclline linelist nostar writepop doppcatch sizepc 10 norefine'
 print(command)
 result = commands.getoutput(command)
 print(result)

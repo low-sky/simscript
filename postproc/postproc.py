@@ -58,7 +58,6 @@ def FileSetup(targetdir,timestep=21,face=0,level=0,ppdir='/home/eros/simscript/p
                               # levels than this will not contribute to the data!
                               # Now we set our spatial extent...
                               left_edge=[0.0, 0.0, 0.0],
-                              right_edge=[1.0, 1.0, 1.0],
                               # How many dimensions along each axis
                               dims=DIMS,
                               # And any fields to preload (this is optional!)
@@ -148,7 +147,7 @@ def MakeFits (fitsfile='image.fits', dpc = None,
             hd['CTYPE2'] = 'DEC--CAR'
             hd['EQUINOX'] = 2000.0
             hd['radesys'] = 'FK5'
-            hd['TELESCOP'] = 'RADMC3D'
+            hd['TELESCOP'] = 'RADMC3D
             hd['object'] = 'SIM@ %.0f PC'%dpc
 	else:
             print('0 pc to object?')
