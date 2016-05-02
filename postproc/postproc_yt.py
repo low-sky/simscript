@@ -118,6 +118,16 @@ def YTexport(filename,TempDir):
     def _MicroTurbulence(field, data):
         return (3*yt.physical_constants.boltzmann_constant_cgs*
                 data["Temperature"]/mu_h)**0.5
+    def _vx(field, data):
+        return (data["x-velocity"])*1e5
+
+    def _vy(field, data):
+        return (data["y-velocity"])*1e5
+
+    def _vz(field, data):
+        return (data["z-velocity"])*1e5
+
+
 
     ds = yt.load(filename)
 
@@ -126,6 +136,9 @@ def YTexport(filename,TempDir):
     ds.add_field(("gas", "number_density_CO"), function=_NumberDensityCO, units="cm**-3")
     ds.add_field(("gas", "number_density"), function=_NumberDensityH2, units="cm**-3",force_override=True)
     ds.add_field(("gas", "microturbulence"), function=_MicroTurbulence, units="cm/s",force_override=True)
+    ds.add_field(("gas", "x-velocity-cgs"), function=_vx, units="cm/s",force_override=True)
+    ds.add_field(("gas", "y-velocity-cgs"), function=_vy, units="cm/s",force_override=True)
+    ds.add_field(("gas", "z-velocity-cgs"), function=_vz, units="cm/s",force_override=True)
 
     writer = RadMC3DWriter(ds)
     writer.write_amr_grid()
@@ -135,7 +148,7 @@ def YTexport(filename,TempDir):
     writer.write_line_file(("gas", "microturbulence"), "microturbulence.inp")
     writer.write_line_file(("enzo", "Temperature"), "gas_temperature.inp")
     writer.write_dust_file(("enzo", "Temperature"), "dust_temperature.dat")
-    velocity_fields = ["x-velocity", "y-velocity", "z-velocity"]
+    velocity_fields = ["x-velocity-cgs", "y-velocity-cgs", "z-velocity-cgs"]
     writer.write_line_file(velocity_fields, "gas_velocity.inp")
     filelist = ["dust_density.inp","numberdens_13co.inp",
                 "numberdens_h2.inp", "microturbulence.inp",
@@ -214,7 +227,7 @@ def MakeFits (fitsfile='image.fits', dpc = None,
         if (toK == True):
             lam0 = 2.99792458e8/110.2013542798e9*1e6
             vaxis = 2.99792458e8*(lam0-a.wavelength)/lam0
-            dv = np.median(vaxis-Shift(vaxis,1)) 
+            dv = np.median(vaxis-np.roll(vaxis,1)) 
             ind = np.argmin(abs(vaxis))
             hd['CDELT3'] = dv
             hd['CRPIX3'] = ind + 1
