@@ -21,9 +21,9 @@ NFiducials = 5
 #Scale temperature by this value
 scalefac = 2.0
 
-
 BoxSize = 10*u.pc
 Tvals = 10.0*u.K*np.ones(values.shape[0])*scalefac**2
+print(Tvals)
 kMin = 2*np.ones(values.shape[0]).astype('int')
 kMax = 4*np.ones(values.shape[0]).astype('int')
 RootGridSize = 128
@@ -135,7 +135,7 @@ if Fiducials:
     seeds = np.random.randint(long(2)**24,size=(NFiducials))
     logVPvals = logVPmin+(logVPmax-logVPmin)*fidval
     logbetavals = logbetamin + (logbetamax-logbetamin)*fidval
-    Tvals = 10*np.ones(NFiducials)*u.K
+    Tvals = 10*np.ones(NFiducials)*u.K*scalefac**2
     kMin = 2*np.ones(NFiducials).astype('int')
     kMax = 8*np.ones(NFiducials).astype('int')
 
