@@ -15,6 +15,6 @@ cd $PBS_O_WORKDIR
 echo "Current working directory is `pwd`"
 
 echo "Starting run at: `date`"
-/home/eros/anaconda/bin/python designs8_big.py
+/home/eros/anaconda/bin/python designs8_hot.py
 
 echo "Program diffuse finished with exit code $? at: `date`"
