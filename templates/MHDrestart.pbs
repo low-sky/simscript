@@ -8,7 +8,7 @@
 #PBS -M erosolow@ualberta.ca
 #PBS -l epilogue=/home/eros/bin/epilogue.sh
 
-module load library/hdf5/1.8.8
+module load library/hdf5/1.8.9
 set path = ($path /home/eros/bin)
 setenv PYTHONPATH `echo $PYTHONPATH`:/home/eros/lib/python:/home/eros/code/
 
