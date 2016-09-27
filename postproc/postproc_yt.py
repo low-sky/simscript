@@ -25,7 +25,7 @@ def FileSetup(targetdir,timestep=21,face=0,level=0,
 #    execfile(ppdir+'makefits.py')
 #    execfile(ppdir+'readRADMC.py')
 
-    name = targetdir.replace('/','')
+    name = targetdir.replace('/','')+'{0}_{1}_{2}'.format(timestep,face,level)
 
     tempdir = os.getenv('PWD')+'/tmp_'+name+'/'
     print(commands.getoutput('rm -rf '+tempdir))
@@ -117,15 +117,15 @@ def YTexport(filename,TempDir):
         return dust_to_gas * data["density"]
     def _MicroTurbulence(field, data):
         return (3*yt.physical_constants.boltzmann_constant_cgs*
-                data["Temperature"]/mu_h)**0.5
+                data["Temperature"]/mu_h)**0.5*0.01 # put in 0.01 to see if Doppler is working
     def _vx(field, data):
-        return (data["x-velocity"])*1e5
+        return (data["x-velocity"])
 
     def _vy(field, data):
-        return (data["y-velocity"])*1e5
+        return (data["y-velocity"])
 
     def _vz(field, data):
-        return (data["z-velocity"])*1e5
+        return (data["z-velocity"])
 
 
 
