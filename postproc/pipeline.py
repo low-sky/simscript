@@ -3,6 +3,7 @@ import sys
 import postproc_yt as pp
 import os
 import shutil
+
 targetdir = sys.argv[1]
 timestep = float(sys.argv[2])
 face = float(sys.argv[3])
@@ -25,4 +26,4 @@ save_name = D['FileName'][:-5]+'_radmc.fits'
 
 pp.MakeFits(fitsfile=save_name,dpc = 260.0,toK=True)
 shutil.move(save_name,outdir)
-
+shutil.rmtree(D['TempDir'])

@@ -106,6 +106,9 @@ def WriteAuxFiles(TempDir, nPhot = 10000, lines_mode = 3,
 
 def YTexport(filename,TempDir):
 
+    origdir = os.getenv('PWD')
+    os.chdir(TempDir)
+
     x_co = 5.695e-5/77.0
     mu_h = yt.YTQuantity(4.00e-24,'g')
     def _NumberDensityCO(field, data):
@@ -117,7 +120,7 @@ def YTexport(filename,TempDir):
         return dust_to_gas * data["density"]
     def _MicroTurbulence(field, data):
         return (3*yt.physical_constants.boltzmann_constant_cgs*
-                data["Temperature"]/mu_h)**0.5*0.01 # put in 0.01 to see if Doppler is working
+                data["Temperature"]/mu_h)**0.5 # put in 0.01 to see if Doppler is working
     def _vx(field, data):
         return (data["x-velocity"])
 
@@ -140,7 +143,7 @@ def YTexport(filename,TempDir):
     ds.add_field(("gas", "y-velocity-cgs"), function=_vy, units="cm/s",force_override=True)
     ds.add_field(("gas", "z-velocity-cgs"), function=_vz, units="cm/s",force_override=True)
 
-    writer = RadMC3DWriter(ds)
+    writer = RadMC3DWriter(ds,0) # Use only root grid extraction
     writer.write_amr_grid()
     writer.write_dust_file(("gas", "dust_density"), "dust_density.inp")
     writer.write_line_file(("gas", "number_density_CO"), "numberdens_13co.inp")
@@ -150,15 +153,16 @@ def YTexport(filename,TempDir):
     writer.write_dust_file(("enzo", "Temperature"), "dust_temperature.dat")
     velocity_fields = ["x-velocity-cgs", "y-velocity-cgs", "z-velocity-cgs"]
     writer.write_line_file(velocity_fields, "gas_velocity.inp")
-    filelist = ["dust_density.inp","numberdens_13co.inp",
-                "numberdens_h2.inp", "microturbulence.inp",
-                "gas_temperature.inp", "dust_temperature.dat",
-                "gas_velocity.inp","amr_grid.inp"]
-    for thisfile in filelist:
-        command = 'mv '+thisfile+' '+TempDir+'/'
-        commands.getoutput(command)
-        
 
+    # filelist = ["dust_density.inp","numberdens_13co.inp",
+    #             "numberdens_h2.inp", "microturbulence.inp",
+    #             "gas_temperature.inp", "dust_temperature.dat",
+    #             "gas_velocity.inp","amr_grid.inp"]
+    # for thisfile in filelist:
+    #     command = 'mv '+thisfile+' '+TempDir+'/'
+    #     commands.getoutput(command)
+        
+    os.chdir(origdir)
     return(ds.domain_dimensions)
 
 
