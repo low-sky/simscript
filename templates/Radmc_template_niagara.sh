@@ -11,8 +11,8 @@ export OMP_NUM_THREADS=$SLURM_JOB_CPUS_PER_NODE
 
 module restore my_default
 
-source /home/ekoch/.bashrc
-source /home/ekoch/preload.bash
+source $HOME/.bashrc
+source $HOME/preload.bash
 
 module load NiaEnv
 module load gcc/7.3.0
@@ -39,7 +39,7 @@ pids=
 # Loop through the data files for each simulation since
 # the timesteps are not homogeneous.
 for data_file in $DATADIR/$sim_name/data.0*.hdf; do
-    $HOME/code/simscript/postproc/pipeline_orion.py $PPOUTDIR/$sim_name $data_file 0 0 &
+    $HOME/anaconda3/bin/python $HOME/code/simscript/postproc/pipeline_orion.py $PPOUTDIR/$sim_name $data_file 0 0 &
     pids+=" $!"
 done
 
