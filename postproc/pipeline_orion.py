@@ -15,6 +15,7 @@ face = float(sys.argv[3])
 level = float(sys.argv[4])
 
 ppdir = os.getenv('PPDIR')
+datadir = os.getenv("DATADIR")
 outdir = os.getenv('PPOUTDIR')
 
 D = pp.FileSetup(targetdir, data_file,
@@ -25,7 +26,7 @@ D = pp.FileSetup(targetdir, data_file,
 
 os.chdir(D['TempDir'])
 
-command = ppdir + 'radmc3d image npix ' + \
+command = datadir + 'radmc3d image npix ' + \
     str(int(D['GridSize'])) + \
     ' iline 1 widthkms 10 linenlam 500 loadlambda fluxcons inclline linelist nostar writepop doppcatch sizepc 10 norefine'
 print(command)
