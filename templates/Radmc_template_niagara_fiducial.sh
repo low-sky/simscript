@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --time=24:00:00
-#SBATCH --mem=1547000M
+#SBATCH --mem=128000M
 #SBATCH --ntasks-per-node=32
 #SBATCH --nodes=1
 #SBATCH --job-name=radmc-%J
