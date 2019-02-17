@@ -14,7 +14,6 @@ import readRADMC as RADMC
 
 
 def FileSetup(targetdir, data_file,
-              # timestep=21,
               face=0, level=0,
               ppdir='/home/eros/code/simscript/postproc/',
               Tk=10):
@@ -68,7 +67,7 @@ def FileSetup(targetdir, data_file,
     command = 'cp ' + ppdir + '/wavelength_micron.inp ' + tempdir
     subprocess.call(command)
 
-    FlatFileName = tempdir + '/%s_flatrho_%04i_%02i.fits' % (name, face)
+    FlatFileName = tempdir + '/{}_flatrho.fits'.format(name)
 
     OutputDict = {'GasTemp': Tk,
                   'TempDir': tempdir,
@@ -161,6 +160,8 @@ def YTexport(filename, TempDir):
                  function=_NumberDensityCO, units="cm**-3")
     ds.add_field(("gas", "number_density"), function=_NumberDensityH2,
                  units="cm**-3", force_override=True)
+    ds.add_field(("gas", "temperature"), function=_temp,
+                 units="K", force_override=True)
     ds.add_field(("gas", "microturbulence"),
                  function=_MicroTurbulence, units="cm/s", force_override=True)
     ds.add_field(("gas", "x-velocity-cgs"), function=_vx,
@@ -169,8 +170,6 @@ def YTexport(filename, TempDir):
                  units="cm/s", force_override=True)
     ds.add_field(("gas", "z-velocity-cgs"), function=_vz,
                  units="cm/s", force_override=True)
-    ds.add_field(("gas", "temperature"), function=_temp,
-                 units="K", force_override=True)
 
     writer = RadMC3DWriter(ds, 0)  # Use only root grid extraction
     writer.write_amr_grid()
