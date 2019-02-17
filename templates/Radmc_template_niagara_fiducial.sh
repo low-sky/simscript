@@ -35,11 +35,18 @@ mkdir $sim_name
 
 cd $sim_name
 
+pids=
+
 # Loop through the data files for each simulation since
 # the timesteps are not homogeneous.
 for data_file in $DATADIR/$sim_name/data.0*.hdf; do
     $EHOME/code/simscript/postproc/pipeline_orion.py $PPOUTDIR/$sim_name $data_file 0 0 &
+    pids+=" $!"
 done
+
+wait $pids || { echo "There was an error" >&2; exit 1; }
+
+echo "All jobs exited."
 
 # targetdir = sys.argv[1]
 # timestep = float(sys.argv[2])
