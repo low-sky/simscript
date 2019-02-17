@@ -36,7 +36,7 @@ pids=
 
 # Loop through the data files for each simulation since
 # the timesteps are not homogeneous.
-for data_file in $DATADIR/$sim_name/data.0*.hdf; do
+for data_file in $DATADIR/$sim_name/data.0*.hdf5; do
     $HOME/anaconda3/bin/python $HOME/code/simscript/postproc/pipeline_orion.py $PPOUTDIR/$sim_name $data_file 0 0 &
     pids+=" $!"
 done

@@ -33,8 +33,11 @@ def FileSetup(targetdir, data_file,
     name = '{0}{1}_{2}'.format(data_file.split("/")[-1].rstrip('hdf5'),
                                face, level)
 
-    tempdir = os.getenv('PWD') + '/tmp_' + name + '/'
-    print(subprocess.call('rm -rf ' + tempdir))
+    tempdir = os.path.join(workdir, 'tmp_' + name + '/')
+    try:
+        print(subprocess.call('rm -rf ' + tempdir))
+    except FileNotFoundError:
+        print("No previous temp files found.")
     os.mkdir(tempdir)
 
     print('Building files with prefix %s' % (name))
