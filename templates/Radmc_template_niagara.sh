@@ -1,10 +1,8 @@
 #!/bin/bash
 #SBATCH --time=24:00:00
-#SBATCH --mem=128000M
-#SBATCH --ntasks-per-node=32
 #SBATCH --nodes=1
-#SBATCH --job-name=radmc-%J
-#SBATCH --output=radmc-%J.out
+#SBATCH --job-name=radmc-%A-%a
+#SBATCH --output=radmc-%A-%a.out
 #SBATCH --array=1,3,45,6,7,8,11,12,14,15
 
 export OMP_NUM_THREADS=$SLURM_JOB_CPUS_PER_NODE
