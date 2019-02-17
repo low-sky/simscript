@@ -19,12 +19,11 @@ module load gcc/7.3.0
 module load openmpi/3.1.1
 module load hdf5/1.10.2
 
-export EHOME=/home/ekoch/
-export PPDIR=$EHOME/code/simscript/postproc/
+export PPDIR=$HOME/code/simscript/postproc/
 export DATADIR=/home/e/eros/eros/project/
-export PPOUTDIR=$EHOME/scratch/Orion_sims/
+export PPOUTDIR=$HOME/scratch/Orion_sims/
 # export PYTHONPATH=$PYTHONPATH+':'+$PPDIR
-# source $EHOME/yt-x86_64/bin/activate
+# source $HOME/yt-x86_64/bin/activate
 
 sim_name="Fiducial0$SLURM_ARRAY_TASK_ID"
 
@@ -40,7 +39,7 @@ pids=
 # Loop through the data files for each simulation since
 # the timesteps are not homogeneous.
 for data_file in $DATADIR/$sim_name/data.0*.hdf; do
-    $EHOME/code/simscript/postproc/pipeline_orion.py $PPOUTDIR/$sim_name $data_file 0 0 &
+    $HOME/code/simscript/postproc/pipeline_orion.py $PPOUTDIR/$sim_name $data_file 0 0 &
     pids+=" $!"
 done
 
