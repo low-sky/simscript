@@ -140,13 +140,13 @@ def YTexport(filename, TempDir):
                 # put in 0.01 to see if Doppler is working
 
     def _vx(field, data):
-        return (data["x-velocity"])
+        return (data["velocity_x"])
 
     def _vy(field, data):
-        return (data["y-velocity"])
+        return (data["velocity_y"])
 
     def _vz(field, data):
-        return (data["z-velocity"])
+        return (data["velocity_z"])
 
     # Need to define a temperature field
     def _temp(field, data):
