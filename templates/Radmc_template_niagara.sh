@@ -28,7 +28,9 @@ sim_name="Dsgn0$SLURM_ARRAY_TASK_ID"
 cd $PPOUTDIR
 echo "Current working directory is `pwd`"
 
-mkdir $sim_name
+if [ ! -d $sim_name ]; then
+    mkdir $sim_name
+fi
 
 cd $sim_name
 
