@@ -30,7 +30,7 @@ command = datadir + 'radmc3d image npix ' + \
     str(int(D['GridSize'])) + \
     ' iline 1 widthkms 10 linenlam 500 loadlambda fluxcons inclline linelist nostar writepop doppcatch sizepc 10 norefine'
 print(command)
-result = subprocess.call(command)
+result = subprocess.call(command, shell=True)
 print(result)
 
 save_name = os.path.join(outdir, D['FileName'][17:-5] + '_radmc.fits')

@@ -32,9 +32,11 @@ def FileSetup(targetdir, data_file,
     name = '{0}{1}_{2}'.format(data_file.split("/")[-1].rstrip('hdf5'),
                                face, level)
 
+    print("Work directory: {}".format(workdir))
     tempdir = os.path.join(workdir, 'tmp_' + name + '/')
+    print("Temp directory: {}".format(tempdir))
     try:
-        print(subprocess.call('rm -rf ' + tempdir))
+        print(subprocess.call('rm -rf ' + tempdir, shell=True))
     except FileNotFoundError:
         print("No previous temp files found.")
     os.mkdir(tempdir)
@@ -60,12 +62,13 @@ def FileSetup(targetdir, data_file,
     WriteAuxFiles(tempdir)
     command = 'cp ' + ppdir + '/dustkappa_silicate.inp ' + tempdir
     print(command)
-    subprocess.call(command)
+    subprocess.call(command, shell=True)
     command = 'cp ' + ppdir + '/molecule_13co.inp ' + tempdir
-    subprocess.call(command)
+    subprocess.call(command, shell=True)
     command = 'cp ' + ppdir + '/camera_wavelength_micron.inp ' + tempdir
+    subprocess.call(command, shell=True)
     command = 'cp ' + ppdir + '/wavelength_micron.inp ' + tempdir
-    subprocess.call(command)
+    subprocess.call(command, shell=True)
 
     FlatFileName = tempdir + '/{}_flatrho.fits'.format(name)
 
