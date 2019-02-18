@@ -136,7 +136,7 @@ def YTexport(filename, TempDir):
 
     def _MicroTurbulence(field, data):
         return (3 * yt.physical_constants.boltzmann_constant_cgs *
-                data["Temperature"] / mu_h)**0.5
+                data["temperature"] / mu_h)**0.5
                 # put in 0.01 to see if Doppler is working
 
     def _vx(field, data):
