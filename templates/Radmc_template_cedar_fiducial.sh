@@ -19,7 +19,7 @@ module load openmpi/2.1.1
 module load hdf5/1.8.20
 
 export PPDIR=$HOME/code/simscript/postproc/
-export DATADIR=/home/ekoch/scratch/Orion_sims/
+export DATADIR=$HOME/scratch/Orion_sims/
 export PPOUTDIR=$HOME/scratch/Orion_sims/radmc_13co
 # export PYTHONPATH=$PYTHONPATH+':'+$PPDIR
 # source $HOME/yt-x86_64/bin/activate
