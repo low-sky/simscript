@@ -5,7 +5,6 @@ import os
 import shutil
 import matplotlib
 
-
 matplotlib.use('Agg')
 
 targetdir = sys.argv[1]
@@ -18,6 +17,10 @@ ppdir = os.getenv('PPDIR')
 datadir = os.getenv("DATADIR")
 outdir = os.getenv('PPOUTDIR')
 
+# ppdir = '/home/e/eros/eros/code/simscript/postproc/'
+# datadir = '/home/e/eros/eros/scratch/test/'
+# outdir = '/home/e/eros/eros/scratch/test/'
+# radmcdir = '/home/e/eros/eros/project/'
 D = pp.FileSetup(targetdir, data_file,
                  face=face, level=level,
                  ppdir=ppdir)
@@ -25,17 +28,18 @@ D = pp.FileSetup(targetdir, data_file,
 # pp.ProblemSetup(D['FileName'], face=face, dust_temp=D['GasTemp'])
 
 os.chdir(D['TempDir'])
-
-command = datadir + 'radmc3d image npix ' + \
+print(D)
+command = radmcdir + 'radmc3d image npix ' + \
     str(int(D['GridSize'])) + \
     ' iline 1 widthkms 10 linenlam 500 loadlambda fluxcons inclline linelist nostar writepop doppcatch sizepc 10 norefine'
 print(command)
 result = subprocess.call(command, shell=True)
 print(result)
-
-save_name = os.path.join(outdir, D['FileName'][17:-5] + '_radmc.fits')
+print(D['FileName'])
+save_name = os.path.join(outdir, D['FileName'] + '_radmc.fits')
 
 pp.MakeFits(fitsfile=save_name, dpc=260.0, toK=True)
 
 shutil.move(save_name, outdir)
-shutil.rmtree(D['TempDir'])
+os.chdir(outdir)
+# shutil.rmtree(D['TempDir'])

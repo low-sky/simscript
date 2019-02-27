@@ -30,7 +30,7 @@ def FileSetup(targetdir, data_file,
 
     # name = os.path.join(targetdir,
     name = '{0}{1}_{2}'.format(data_file.split("/")[-1].rstrip('hdf5'),
-                               face, level)
+                               int(face), int(level))
 
     print("Work directory: {}".format(workdir))
     tempdir = os.path.join(workdir, 'tmp_' + name + '/')
@@ -70,7 +70,7 @@ def FileSetup(targetdir, data_file,
     command = 'cp ' + ppdir + '/wavelength_micron.inp ' + tempdir
     subprocess.call(command, shell=True)
 
-    FlatFileName = tempdir + '/{}_flatrho.fits'.format(name)
+    FlatFileName = tempdir + '/{0}_flatrho.fits'.format(name)
 
     OutputDict = {'GasTemp': Tk,
                   'TempDir': tempdir,
@@ -121,9 +121,6 @@ def WriteAuxFiles(TempDir, nPhot=10000, lines_mode=3,
 
 def YTexport(filename, TempDir):
 
-    origdir = os.getenv('PWD')
-    os.chdir(TempDir)
-
     x_co = 5.695e-5 / 77.0
     mu_h = yt.YTQuantity(4.00e-24, 'g')
 
@@ -156,7 +153,7 @@ def YTexport(filename, TempDir):
         return (data['ones'] * 10 * yt.units.K)
 
     ds = yt.load(filename)
-
+    
     ds.add_field(("gas", "dust_density"),
                  function=_DustDensity, units="g/cm**3")
     ds.add_field(("gas", "number_density_CO"),
@@ -173,6 +170,10 @@ def YTexport(filename, TempDir):
                  units="cm/s", force_override=True)
     ds.add_field(("gas", "z-velocity-cgs"), function=_vz,
                  units="cm/s", force_override=True)
+
+
+    origdir = os.getenv('PWD')
+    os.chdir(TempDir)
 
     writer = RadMC3DWriter(ds, 0)  # Use only root grid extraction
     writer.write_amr_grid()
@@ -270,7 +271,7 @@ def MakeFits(fitsfile='image.fits', dpc=None,
             hd['CRPIX3'] = ind + 1
             hd['CRVAL3'] = vaxis[ind + 1]
             hd['CTYPE3'] = 'VOPT'
-            hd.update('BUNIT', 'K', 'Tmb')
+            hd['BUNIT'] = 'K'
         else:
             scalefac = 1
             hd['CDELT3'] = deltalam
@@ -280,4 +281,4 @@ def MakeFits(fitsfile='image.fits', dpc=None,
             hd['BUNIT'] = 'erg/s/cm^2/Hz/ster'
             #       print(type(a.image))
     print("Writing Output to %s" % fitsfile)
-    hdu.writeto(fitsfile, clobber=True)
+    hdu.writeto(fitsfile, overwrite=True)

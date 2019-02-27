@@ -25,7 +25,6 @@ import numpy as np
 class Object(object):
     pass
 
-
 def readimage(filename=None, imagefile=None):
     if filename is None:
         filename = 'image.out'
@@ -41,37 +40,18 @@ def readimage(filename=None, imagefile=None):
     for i in range(len(wavelength)):
         wavelength[i] = lines[i + 4]
 
-    temp = np.zeros(int(nx) * int(ny) * int(nf))
-    for i in range(1, len(lines[(int(nf) + 4):-1])):
-        line_out = lines[(int(nf) + 4) + i].replace('\n', '').strip()
-        if len(line_out) == 0:
-            continue
-        temp[i - i] = float(line_out)
-
-    print('Worked')
-    image = temp.reshape(int(nf), int(nx), int(ny))  # .transpose((1,2,0))
+    image_lines = lines[(len(wavelength)+4):]
+    image = np.array([np.float64(line.strip()) for line in image_lines
+                      if not line.isspace()])
+    image = image.reshape(int(nf), int(nx), int(ny)) 
     print(image.shape)
-    # print(image[1,1,1])
     xi = ((np.arange(int(nx)) + 0.5) / (int(nx)) - 0.5) * sizepix_x * int(nx)
     yi = ((np.arange(int(ny)) + 0.5) / (int(ny)) - 0.5) * sizepix_y * int(ny)
 
-    # xi=(np.arange(int(nx))-int(nx)/2+0.5)*float(sizepix_x)
-    # yi=(np.arange(int(ny))-int(ny)/2+0.5)*float(sizepix_y)
-    # Do a contour plot of the image
-#   fig = plt.figure()
-#   ax = fig.add_subplot(111,aspect='equal')
-#   cax = ax.imshow(image.sum(axis=0),cmap=plt.cm.bone, interpolation='nearest',extent=[-float(sizepix_x)*int(nx)/2,float(sizepix_x)*int(nx)/2,-float(sizepix_y)*int(ny)/2,float(sizepix_y)*int(ny)/2])
-#   ax.contour(image,cmap=plt.cm.bone)
     # Compute the flux
     flux = np.sum(image)
     pc = 3.0857200e+18
     flux = flux / pc**2
-#   cbar = fig.colorbar(cax)
-#   plt.title(r'flux at 1 pc = %s erg/cm^2/s/Hz' % flux)
-#   if imagefile is None:
-#       imagefile = "image.png"
-#   fig.savefig(imagefile)
-    # plt.show()
 
     returnVar = Object()
     setattr(returnVar, 'nx', int(nx))
