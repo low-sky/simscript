@@ -16,6 +16,7 @@ level = float(sys.argv[4])
 ppdir = os.getenv('PPDIR')
 datadir = os.getenv("DATADIR")
 outdir = os.getenv('PPOUTDIR')
+radmcdir = os.getenv("RADMCDIR")
 
 # ppdir = '/home/e/eros/eros/code/simscript/postproc/'
 # datadir = '/home/e/eros/eros/scratch/test/'

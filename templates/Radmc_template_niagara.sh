@@ -20,6 +20,7 @@ module load hdf5/1.10.2
 export PPDIR=$HOME/code/simscript/postproc/
 export DATADIR=/home/e/eros/eros/project/
 export PPOUTDIR=$HOME/scratch/Orion_sims/
+export RADMCDIR=$HOME/scratch/Orion_sims/
 # export PYTHONPATH=$PYTHONPATH+':'+$PPDIR
 # source $HOME/yt-x86_64/bin/activate
 
